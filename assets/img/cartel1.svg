@@ -1,0 +1,22 @@
+<svg viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="800" fill="#1c1a14"/>
+  <!-- Decorative arc -->
+  <path d="M 0 400 Q 300 150 600 400" fill="none" stroke="#c8a96e" stroke-width="1.2" opacity="0.6"/>
+  <path d="M 0 430 Q 300 180 600 430" fill="none" stroke="#c8a96e" stroke-width="0.6" opacity="0.3"/>
+  <!-- Big title -->
+  <text x="300" y="240" font-family="Georgia, serif" font-size="72" font-weight="400" fill="#e8e4d9" text-anchor="middle" font-style="italic">Jazz</text>
+  <text x="300" y="305" font-family="Helvetica Neue, Arial, sans-serif" font-size="18" font-weight="300" fill="#e8e4d9" text-anchor="middle" letter-spacing="12">FESTIVAL</text>
+  <!-- Decorative line -->
+  <line x1="180" y1="330" x2="420" y2="330" stroke="#c8a96e" stroke-width="0.8"/>
+  <!-- Date block -->
+  <text x="300" y="380" font-family="Helvetica Neue, Arial, sans-serif" font-size="10" font-weight="400" fill="#c8a96e" text-anchor="middle" letter-spacing="4">14 · 15 · 16 AGOSTO 2025</text>
+  <!-- Venue -->
+  <text x="300" y="430" font-family="Helvetica Neue, Arial, sans-serif" font-size="9" font-weight="300" fill="#8a8880" text-anchor="middle" letter-spacing="3">AUDITORIO NACIONAL · MADRID</text>
+  <!-- Circle decoration -->
+  <circle cx="300" cy="580" r="80" fill="none" stroke="#c8a96e" stroke-width="0.8" opacity="0.4"/>
+  <circle cx="300" cy="580" r="55" fill="none" stroke="#c8a96e" stroke-width="0.4" opacity="0.3"/>
+  <text x="300" y="576" font-family="Georgia, serif" font-size="10" fill="#c8a96e" text-anchor="middle" letter-spacing="2" opacity="0.7">EDICIÓN</text>
+  <text x="300" y="595" font-family="Georgia, serif" font-size="16" fill="#c8a96e" text-anchor="middle">XIV</text>
+  <!-- Bottom -->
+  <text x="300" y="765" font-family="Helvetica Neue, Arial, sans-serif" font-size="7.5" fill="#4a4a42" text-anchor="middle" letter-spacing="3">CARTELERÍA · EVENTO CULTURAL</text>
+</svg>

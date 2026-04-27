@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Design — Enrique Malvar</title>
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#f7f6f3;
+  --bg2:#ffffff;
+  --text:#1a1a18;
+  --text2:#6b6b65;
+  --accent:#1a1a18;
+  --border:#e0dfd8;
+  --tag-bg:#eeede8;
+  --card-shadow:0 4px 28px rgba(0,0,0,0.08);
+  --transition:0.35s cubic-bezier(.4,0,.2,1);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:var(--bg);border-bottom:1px solid var(--border);
+  padding:0 2.5rem;
+  display:flex;align-items:center;justify-content:space-between;height:60px;
+}
+.nav-brand{font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--text);text-decoration:none;}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{font-size:12px;color:var(--text2);text-decoration:none;letter-spacing:0.06em;transition:color 0.2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--text);}
+
+/* ── HERO ── */
+.hero{padding:4rem 2.5rem 2.5rem;max-width:1100px;margin:0 auto;width:100%;}
+.hero-eyebrow{font-size:10px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--text2);margin-bottom:1rem;display:flex;align-items:center;gap:0.8rem;}
+.hero-eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--text2);}
+.hero h1{font-size:clamp(2.2rem,5vw,3.8rem);font-weight:300;letter-spacing:-0.02em;line-height:1.1;}
+.hero h1 em{font-style:italic;}
+.hero p{margin-top:1rem;font-size:14px;color:var(--text2);max-width:480px;line-height:1.75;}
+
+/* ── SECTION LABEL ── */
+.section-label{
+  padding:0 2.5rem;max-width:1100px;margin:0 auto 2rem;width:100%;
+  display:flex;align-items:center;gap:1rem;
+}
+.section-label span{font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--text2);white-space:nowrap;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* ══ PROJECT CARDS (main list view) ══ */
+.projects-list{
+  padding:0 2.5rem;max-width:1100px;
+  margin:0 auto 5rem;width:100%;
+  display:flex;flex-direction:column;
+  gap:1.5px;
+}
+
+.proj-card{
+  background:var(--bg2);
+  overflow:hidden;
+  cursor:pointer;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  min-height:320px;
+  transition:box-shadow var(--transition);
+  border:1px solid transparent;
+}
+.proj-card:hover{
+  box-shadow:var(--card-shadow);
+  border-color:var(--border);
+  z-index:1;
+}
+.proj-card:nth-child(even){direction:rtl;}
+.proj-card:nth-child(even) > *{direction:ltr;}
+
+/* Screenshot side */
+.proj-screen{
+  overflow:hidden;position:relative;
+  background:#e0ddd6;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.proj-screen img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform var(--transition);
+}
+.proj-card:hover .proj-screen img{transform:scale(1.03);}
+
+/* Info side */
+.proj-info{
+  padding:2.5rem 3rem;
+  display:flex;flex-direction:column;
+  justify-content:center;
+}
+.proj-num{
+  font-size:9px;font-weight:600;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--text2);
+  margin-bottom:1rem;
+}
+.proj-title{
+  font-size:clamp(1.3rem,2.5vw,1.9rem);
+  font-weight:300;letter-spacing:-0.02em;
+  line-height:1.15;margin-bottom:0.7rem;
+}
+.proj-title em{font-style:italic;}
+.proj-desc{
+  font-size:13px;color:var(--text2);
+  line-height:1.75;margin-bottom:1.4rem;
+  max-width:340px;
+}
+.tech-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.8rem;}
+.tech-tag{
+  font-size:10px;letter-spacing:0.06em;
+  padding:4px 12px;
+  background:var(--tag-bg);border-radius:100px;
+  color:var(--text2);
+}
+.demo-btn{
+  display:inline-flex;align-items:center;gap:0.6rem;
+  font-family:inherit;font-size:11px;font-weight:600;
+  letter-spacing:0.12em;text-transform:uppercase;
+  text-decoration:none;
+  color:var(--text);
+  padding:10px 22px;
+  border:1px solid var(--text);
+  border-radius:100px;
+  align-self:flex-start;
+  transition:background var(--transition),color var(--transition);
+}
+.demo-btn:hover{background:var(--text);color:#fff;}
+.demo-btn span{font-size:14px;line-height:1;}
+
+
+/* ══ DETAIL VIEW ══ */
+.detail-view{display:none;padding:3rem 2.5rem;max-width:1100px;margin:0 auto;width:100%;}
+.detail-view.active{display:block;}
+
+.back-btn{
+  background:none;border:none;cursor:pointer;
+  font-family:inherit;font-size:12px;color:var(--text2);
+  padding:0;margin-bottom:2rem;
+  display:inline-flex;align-items:center;gap:0.5rem;
+  letter-spacing:0.06em;transition:color 0.2s;
+}
+.back-btn:hover{color:var(--text);}
+
+.detail-header{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:4rem;align-items:start;margin-bottom:2.5rem;
+}
+.detail-header h2{
+  font-size:clamp(1.8rem,4vw,3rem);
+  font-weight:300;letter-spacing:-0.025em;line-height:1.1;
+  margin-bottom:0.8rem;
+}
+.detail-header h2 em{font-style:italic;}
+.detail-header p{font-size:13px;color:var(--text2);line-height:1.8;}
+
+.detail-meta{padding-top:0.5rem;}
+.meta-row{
+  display:flex;align-items:baseline;justify-content:space-between;
+  padding:0.7rem 0;border-bottom:1px solid var(--border);
+  font-size:12px;
+}
+.meta-row:first-child{border-top:1px solid var(--border);}
+.meta-label{color:var(--text2);letter-spacing:0.06em;}
+.meta-val{color:var(--text);}
+
+/* 3-column gallery for screenshots (sin portada) */
+.gallery-3cols{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.5px;
+  margin: 0 0 2rem 0;  /* quitamos margen superior que tenía antes */
+}
+.gallery-item{
+  overflow:hidden;
+  border-radius:4px;
+  border:1px solid var(--border);
+  background:#e2e8f0;
+}
+.gallery-item img{
+  width:100%;
+  height:auto;
+  display:block;
+  transition:transform var(--transition);
+}
+.gallery-item:hover img{
+  transform:scale(1.02);
+}
+
+/* Outcome strip */
+.outcome-strip{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);
+  margin-bottom:3rem;
+}
+.outcome-item{
+  background:var(--bg);padding:1.5rem 1.8rem;
+}
+.outcome-num{
+  font-size:clamp(1.8rem,4vw,2.8rem);
+  font-weight:300;letter-spacing:-0.03em;
+  margin-bottom:0.3rem;
+}
+.outcome-label{font-size:10px;color:var(--text2);letter-spacing:0.1em;text-transform:uppercase;}
+
+/* ── PROCESS SECTION ── */
+.process-section{margin-bottom:3rem;}
+.process-title{
+  font-size:10px;font-weight:600;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--text2);
+  margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;
+}
+.process-title::after{content:'';flex:1;height:1px;background:var(--border);}
+.process-steps{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1px;background:var(--border);
+}
+.process-step{background:var(--bg);padding:1.4rem 1.5rem;}
+.step-n{
+  font-size:9px;font-weight:600;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--text2);margin-bottom:0.5rem;
+}
+.step-label{font-size:13px;color:var(--text);line-height:1.5;}
+
+.detail-demo-btn{
+  display:inline-flex;align-items:center;gap:0.6rem;
+  font-family:inherit;font-size:11px;font-weight:600;
+  letter-spacing:0.12em;text-transform:uppercase;
+  text-decoration:none;color:#fff;
+  padding:12px 28px;background:var(--text);
+  border:1px solid var(--text);border-radius:100px;
+  transition:background 0.2s,color 0.2s;
+}
+.detail-demo-btn:hover{background:transparent;color:var(--text);}
+
+/* ── FOOTER ── */
+footer{
+  margin-top:auto;border-top:1px solid var(--border);
+  padding:1.5rem 2.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:1rem;
+}
+.footer-copy{font-size:11px;color:var(--text2);letter-spacing:0.04em;}
+.footer-links{display:flex;gap:1.5rem;list-style:none;}
+.footer-links a{
+  font-size:11px;color:var(--text2);text-decoration:none;
+  letter-spacing:0.06em;transition:color 0.2s;
+}
+.footer-links a:hover{color:var(--text);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:800px){
+  nav{padding:0 1.2rem;}
+  .hero,.section-label,.projects-list,.detail-view{padding-left:1.2rem;padding-right:1.2rem;}
+  .proj-card{grid-template-columns:1fr;min-height:auto;}
+  .proj-card:nth-child(even){direction:ltr;}
+  .proj-screen{aspect-ratio:16/9;}
+  .proj-info{padding:1.8rem 1.5rem;}
+  .detail-header{grid-template-columns:1fr;}
+  .gallery-3cols{grid-template-columns:1fr;} /* stack on mobile */
+  .outcome-strip{grid-template-columns:1fr 1fr;}
+  .process-steps{grid-template-columns:1fr 1fr;}
+  footer{padding:1.2rem;flex-direction:column;align-items:flex-start;}
+}
+@media(max-width:500px){
+  .outcome-strip{grid-template-columns:1fr;}
+  .process-steps{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">Enrique Malvar</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="diseno-grafico.html">Graphic Design</a></li>
+    <li><a href="diseno-web.html" class="active">Web Design</a></li>
+  </ul>
+</nav>
+
+<!-- ══ MAIN VIEW ══ -->
+<div id="web-main">
+
+  <div class="hero">
+    <div class="hero-eyebrow">Web portfolio</div>
+    <h1>Design &amp; development<br><em>full-stack</em></h1>
+    <p>Projects that connect visual design with technical functionality: from landing pages to complete digital ecosystems with NFC.</p>
+  </div>
+
+  <div class="section-label"><span>Featured projects</span></div>
+
+  <div class="projects-list">
+
+    <!-- ── Proyecto 1: NFC Universe ── -->
+    <div class="proj-card" onclick="showDetail('nfcuniverse')">
+      <div class="proj-screen">
+        <img src="assets/web/nfc_web_captura.png" alt="NFC Universe screenshot">
+      </div>
+      <div class="proj-info">
+        <div class="proj-num">01 — NFC Ecosystem</div>
+        <h2 class="proj-title">NFC <em>Universe</em></h2>
+        <p class="proj-desc">Comprehensive NFC solution platform connecting the physical world with digital experiences. Development of automations, contactless interaction applications and digital ecosystem for hospitality and events.</p>
+        <div class="tech-tags">
+          <span class="tech-tag">HTML/CSS</span>
+          <span class="tech-tag">JavaScript</span>
+          <span class="tech-tag">NFC API</span>
+          <span class="tech-tag">CRM Integration</span>
+        </div>
+        <a href="https://nfcuniverse.online/" class="demo-btn" target="_blank" onclick="event.stopPropagation()"><span>↗</span> Visit site</a>
+      </div>
+    </div>
+
+    <!-- ── Proyecto 2: Carta Interactiva NFC ── -->
+    <div class="proj-card" onclick="showDetail('cartainteractiva')">
+      <div class="proj-screen">
+        <img src="assets/web/carta_interactiva_captura.png" alt="Interactive NFC Menu screenshot">
+      </div>
+      <div class="proj-info">
+        <div class="proj-num">02 — Hospitality SaaS</div>
+        <h2 class="proj-title">Interactive <em>NFC Menu</em></h2>
+        <p class="proj-desc">SaaS platform for digitizing menus in the hospitality industry. Customers access the menu with a single NFC tap, eliminating QR codes and reducing printing costs. Full Stack architecture with Node.js and PostgreSQL.</p>
+        <div class="tech-tags">
+          <span class="tech-tag">Node.js</span>
+          <span class="tech-tag">PostgreSQL</span>
+          <span class="tech-tag">NFC</span>
+          <span class="tech-tag">UI/UX</span>
+        </div>
+        <a href="https://cartainteractiva.es/" class="demo-btn" target="_blank" onclick="event.stopPropagation()"><span>↗</span> Visit site</a>
+      </div>
+    </div>
+
+    <!-- ── Proyecto 3: Soka Webmasters ── -->
+    <div class="proj-card" onclick="showDetail('soka')">
+      <div class="proj-screen">
+        <img src="assets/web/soka_web_captura.png" alt="Soka Webmasters screenshot">
+      </div>
+      <div class="proj-info">
+        <div class="proj-num">03 — Digital Agency</div>
+        <h2 class="proj-title">Soka <em>Webmasters</em></h2>
+        <p class="proj-desc">Digital marketing and web development agency focusing on SEO, graphic design and custom strategies. Development and maintenance of corporate websites, e-commerce and CRM solutions (Odoo).</p>
+        <div class="tech-tags">
+          <span class="tech-tag">WordPress</span>
+          <span class="tech-tag">PHP</span>
+          <span class="tech-tag">SEO</span>
+          <span class="tech-tag">Odoo CRM</span>
+        </div>
+        <a href="https://sokawebmasters.es/" class="demo-btn" target="_blank" onclick="event.stopPropagation()"><span>↗</span> Visit site</a>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /web-main -->
+
+
+<!-- ══ DETAIL: NFC UNIVERSE ══ -->
+<div class="detail-view" id="detail-nfcuniverse">
+  <button class="back-btn" onclick="closeDetail()">← Back to projects</button>
+
+  <div class="detail-header">
+    <div>
+      <div style="font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--text2);margin-bottom:0.8rem;">01 — NFC Ecosystem</div>
+      <h2>NFC <em>Universe</em></h2>
+      <p>Platform that connects physical products with digital experiences using NFC technology. Development of custom solutions for companies in various sectors: retail, events, hotels, restaurants and creative products.</p>
+    </div>
+    <div class="detail-meta">
+      <div class="meta-row"><span class="meta-label">Type</span><span class="meta-val">NFC Platform / SaaS</span></div>
+      <div class="meta-row"><span class="meta-label">Year</span><span class="meta-val">2024</span></div>
+      <div class="meta-row"><span class="meta-label">Technology</span><span class="meta-val">HTML5 · CSS3 · JavaScript · NFC API</span></div>
+      <div class="meta-row"><span class="meta-label">Duration</span><span class="meta-val">Ongoing</span></div>
+      <div class="meta-row"><span class="meta-label">Live</span><a href="https://nfcuniverse.online/" class="meta-val" style="color:var(--text);text-decoration:underline;" target="_blank">nfcuniverse.online ↗</a></div>
+    </div>
+  </div>
+
+  <!-- SOLO la galería de 3 imágenes en paralelo (sin portada) -->
+  <div class="gallery-3cols">
+    <div class="gallery-item">
+      <img src="assets/web/nfc_web_captura_1.png" alt="NFC Universe detail 1">
+    </div>
+    <div class="gallery-item">
+      <img src="assets/web/nfc_web_captura_2.png" alt="NFC Universe detail 2">
+    </div>
+    <div class="gallery-item">
+      <img src="assets/web/nfc_web_captura_3.png" alt="NFC Universe detail 3">
+    </div>
+  </div>
+
+  <div class="outcome-strip">
+    <div class="outcome-item"><div class="outcome-num">+30%</div><div class="outcome-label">User interaction</div></div>
+    <div class="outcome-item"><div class="outcome-num">Multi-sector</div><div class="outcome-label">Adapted solutions</div></div>
+    <div class="outcome-item"><div class="outcome-num">Real-time</div><div class="outcome-label">Content updates</div></div>
+  </div>
+
+  <div class="process-section">
+    <div class="process-title">Process</div>
+    <div class="process-steps">
+      <div class="process-step"><div class="step-n">01</div><div class="step-label">Business needs analysis</div></div>
+      <div class="process-step"><div class="step-n">02</div><div class="step-label">NFC architecture design</div></div>
+      <div class="process-step"><div class="step-n">03</div><div class="step-label">Front-end & back-end development</div></div>
+      <div class="process-step"><div class="step-n">04</div><div class="step-label">CRM integration & testing</div></div>
+    </div>
+  </div>
+
+  <a href="https://nfcuniverse.online/" class="detail-demo-btn" target="_blank"><span>↗</span> Visit project</a>
+</div>
+
+
+<!-- ══ DETAIL: CARTA INTERACTIVA NFC ══ -->
+<div class="detail-view" id="detail-cartainteractiva">
+  <button class="back-btn" onclick="closeDetail()">← Back to projects</button>
+
+  <div class="detail-header">
+    <div>
+      <div style="font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--text2);margin-bottom:0.8rem;">02 — Hospitality SaaS</div>
+      <h2>Interactive <em>NFC Menu</em></h2>
+      <p>SaaS solutions for digitizing menus in hospitality using NFC technology. Eliminates QR codes, reduces printing costs and enables real-time updates. Full Stack architecture with live implementation in an operational business.</p>
+    </div>
+    <div class="detail-meta">
+      <div class="meta-row"><span class="meta-label">Type</span><span class="meta-val">SaaS · Hospitality digitization</span></div>
+      <div class="meta-row"><span class="meta-label">Year</span><span class="meta-val">2024</span></div>
+      <div class="meta-row"><span class="meta-label">Technology</span><span class="meta-val">Node.js · PostgreSQL · HTML/CSS · NFC</span></div>
+      <div class="meta-row"><span class="meta-label">Duration</span><span class="meta-val">8 weeks</span></div>
+      <div class="meta-row"><span class="meta-label">Live</span><a href="https://cartainteractiva.es/" class="meta-val" style="color:var(--text);text-decoration:underline;" target="_blank">cartainteractiva.es ↗</a></div>
+    </div>
+  </div>
+
+  <div class="gallery-3cols">
+    <div class="gallery-item">
+      <img src="assets/web/carta_interactiva_captura_1.png" alt="Interactive Menu detail 1">
+    </div>
+    <div class="gallery-item">
+      <img src="assets/web/carta_interactiva_captura_2.png" alt="Interactive Menu detail 2">
+    </div>
+    <div class="gallery-item">
+      <img src="assets/web/carta_interactiva_captura_3.png" alt="Interactive Menu detail 3">
+    </div>
+  </div>
+
+  <div class="outcome-strip">
+    <div class="outcome-item"><div class="outcome-num">-80%</div><div class="outcome-label">Printing costs</div></div>
+    <div class="outcome-item"><div class="outcome-num">Real-time</div><div class="outcome-label">Price/dish updates</div></div>
+    <div class="outcome-item"><div class="outcome-num">Multi-language</div><div class="outcome-label">Allergens & information</div></div>
+  </div>
+
+  <div class="process-section">
+    <div class="process-title">Process</div>
+    <div class="process-steps">
+      <div class="process-step"><div class="step-n">01</div><div class="step-label">Sector needs audit</div></div>
+      <div class="process-step"><div class="step-n">02</div><div class="step-label">Mobile-first UX/UI design</div></div>
+      <div class="process-step"><div class="step-n">03</div><div class="step-label">Full Stack & REST API development</div></div>
+      <div class="process-step"><div class="step-n">04</div><div class="step-label">Deployment & client training</div></div>
+    </div>
+  </div>
+
+  <a href="https://cartainteractiva.es/" class="detail-demo-btn" target="_blank"><span>↗</span> Visit project</a>
+</div>
+
+
+<!-- ══ DETAIL: SOKA WEBMASTERS ══ -->
+<div class="detail-view" id="detail-soka">
+  <button class="back-btn" onclick="closeDetail()">← Back to projects</button>
+
+  <div class="detail-header">
+    <div>
+      <div style="font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--text2);margin-bottom:0.8rem;">03 — Digital Agency</div>
+      <h2>Soka <em>Webmasters</em></h2>
+      <p>Agency specialized in web design, digital marketing and SEO. Development of corporate websites and e-commerce with a focus on well-planned, scalable technical architecture. Implementation of CRM solutions (Odoo) and custom positioning strategies.</p>
+    </div>
+    <div class="detail-meta">
+      <div class="meta-row"><span class="meta-label">Type</span><span class="meta-val">Digital Agency / Consulting</span></div>
+      <div class="meta-row"><span class="meta-label">Year</span><span class="meta-val">2023 - Present</span></div>
+      <div class="meta-row"><span class="meta-label">Technology</span><span class="meta-val">WordPress · PHP · HTML/CSS · SEO</span></div>
+      <div class="meta-row"><span class="meta-label">Duration</span><span class="meta-val">Ongoing</span></div>
+      <div class="meta-row"><span class="meta-label">Live</span><a href="https://sokawebmasters.es/" class="meta-val" style="color:var(--text);text-decoration:underline;" target="_blank">sokawebmasters.es ↗</a></div>
+    </div>
+  </div>
+
+  <div class="gallery-3cols">
+    <div class="gallery-item">
+      <img src="assets/web/soka_web_captura_1.png" alt="Soka Webmasters detail 1">
+    </div>
+    <div class="gallery-item">
+      <img src="assets/web/soka_web_captura_2.png" alt="Soka Webmasters detail 2">
+    </div>
+    <div class="gallery-item">
+      <img src="assets/web/soka_web_captura_3.png" alt="Soka Webmasters detail 3">
+    </div>
+  </div>
+
+  <div class="outcome-strip">
+    <div class="outcome-item"><div class="outcome-num">100%</div><div class="outcome-label">Custom design</div></div>
+    <div class="outcome-item"><div class="outcome-num">+40%</div><div class="outcome-label">Organic traffic</div></div>
+    <div class="outcome-item"><div class="outcome-num">Multi-area</div><div class="outcome-label">SEO · Design · Development</div></div>
+  </div>
+
+  <div class="process-section">
+    <div class="process-title">Process</div>
+    <div class="process-steps">
+      <div class="process-step"><div class="step-n">01</div><div class="step-label">Market & competitor analysis</div></div>
+      <div class="process-step"><div class="step-n">02</div><div class="step-label">SEO strategy & web architecture</div></div>
+      <div class="process-step"><div class="step-n">03</div><div class="step-label">Optimized web development</div></div>
+      <div class="process-step"><div class="step-n">04</div><div class="step-label">Ranking & reporting</div></div>
+    </div>
+  </div>
+
+  <a href="https://sokawebmasters.es/" class="detail-demo-btn" target="_blank"><span>↗</span> Visit project</a>
+</div>
+
+
+<footer>
+  <span class="footer-copy">© 2025 Enrique Malvar — Graphic Designer & Web Developer</span>
+  <ul class="footer-links">
+    <li><a href="#">LinkedIn</a></li>
+    <li><a href="#">GitHub</a></li>
+    <li><a href="#">Behance</a></li>
+    <li><a href="#">Download CV</a></li>
+  </ul>
+</footer>
+
+<script>
+function showDetail(id){
+  document.getElementById('web-main').style.display='none';
+  document.querySelectorAll('.detail-view').forEach(d=>d.classList.remove('active'));
+  var d=document.getElementById('detail-'+id);
+  if(d){d.classList.add('active');window.scrollTo(0,0);}
+}
+function closeDetail(){
+  document.getElementById('web-main').style.display='';
+  document.querySelectorAll('.detail-view').forEach(d=>d.classList.remove('active'));
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
