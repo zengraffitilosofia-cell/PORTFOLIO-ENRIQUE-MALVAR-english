@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enrique Malvar — Designer & Web Developer</title>
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#f7f6f3;
+  --bg2:#ffffff;
+  --text:#1a1a18;
+  --text2:#6b6b65;
+  --accent:#1a1a18;
+  --border:#e0dfd8;
+  --tag-bg:#eeede8;
+  --card-shadow:0 2px 32px rgba(0,0,0,0.09);
+  --transition:0.38s cubic-bezier(.4,0,.2,1);
+}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  overflow-x: hidden;
+  position: relative;
+}
+/* Preloader */
+.preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s;
+}
+.preloader.hide { opacity: 0; pointer-events: none; }
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 3px solid var(--border);
+  border-top-color: var(--text);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:var(--bg);
+  border-bottom:1px solid var(--border);
+  padding:0 2.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  height:60px;
+}
+.nav-brand{
+  font-size:12px;font-weight:600;
+  letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--text);text-decoration:none;
+}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{
+  font-size:12px;color:var(--text2);text-decoration:none;
+  letter-spacing:0.06em;transition:color 0.2s;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--text);}
+
+/* ── HERO ── */
+.hero{
+  padding:5rem 2.5rem 3rem;
+  max-width:1100px;margin:0 auto;width:100%;
+}
+.hero-eyebrow{
+  font-size:10px;font-weight:600;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--text2);
+  margin-bottom:1.4rem;display:flex;align-items:center;gap:0.8rem;
+}
+.hero-eyebrow::before{content:'';display:block;width:28px;height:1px;background:var(--text2);}
+.hero h1{
+  font-size:clamp(1.584rem, 3.63vw, 2.772rem);
+  font-weight:300;
+  letter-spacing:-0.025em;
+  line-height:1.2;
+  color:var(--text);
+  max-width:720px;
+  min-height: 5rem;
+}
+.hero h1 em{font-style:italic;font-weight:300;}
+.typewriter-cursor {
+  display: inline-block;
+  width: 2px;
+  margin-left: 4px;
+  background-color: var(--text);
+  animation: blink 0.7s step-end infinite;
+}
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+.hero-sub{
+  margin-top:1.4rem;
+  font-size:14px;color:var(--text2);
+  max-width:480px;line-height:1.75;
+}
+
+/* ── DIVIDER ── */
+.divider{
+  height:1px;background:var(--border);
+  max-width:1100px;margin:0 auto;
+  padding:0 2.5rem;
+}
+.divider-inner{height:1px;background:var(--border);}
+
+/* ── SECTION INTRO ── */
+.section-intro{
+  padding:2.5rem 2.5rem 1.5rem;
+  max-width:1100px;margin:0 auto;width:100%;
+  display:flex;align-items:center;gap:1rem;
+}
+.section-intro span{
+  font-size:10px;font-weight:600;
+  letter-spacing:0.18em;text-transform:uppercase;color:var(--text2);
+  white-space:nowrap;
+}
+.section-intro::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* ── CATEGORY CARDS ── */
+.cards-wrap{
+  padding:0 2.5rem 6rem;
+  max-width:1100px;margin:0 auto;width:100%;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1.5px;
+  position: relative;
+  z-index: 2;
+}
+.cat-card{
+  position:relative;
+  overflow:hidden;
+  aspect-ratio:3/2;
+  cursor:pointer;
+  text-decoration:none;
+  display:block;
+  will-change: transform;
+  transform: translateX(0);
+  transition: transform 0.5s ease-out;
+  z-index: 2;
+  background: transparent;
+}
+.cat-card.expanded {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  aspect-ratio: auto;
+  cursor: pointer;
+  transition: none;
+  overflow: auto;
+}
+.cat-card.expanded .cat-card-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 800px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+.cat-card.expanded .cat-card-title {
+  font-size: 4rem;
+  white-space: normal;
+}
+.cat-card.expanded .cat-card-desc {
+  font-size: 1.2rem;
+  max-width: 100%;
+  margin: 0 auto;
+}
+.cat-card.expanded .cat-card-arrow {
+  font-size: 1.4rem;
+  margin-top: 2rem;
+  padding: 12px 28px;
+}
+.cat-card.expanded .cat-card-num {
+  font-size: 1rem;
+}
+.cat-card.expanded .cat-card-deco {
+  font-size: 15vw;
+  top: 10%;
+  right: 10%;
+  opacity: 0.1;
+}
+.card-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+.cat-card-content {
+  position: relative;
+  z-index: 2;
+  transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+.cat-card.graphic.animate-in {
+  animation: slideInLeftElastic 0.9s cubic-bezier(0.34, 1.2, 0.55, 1) forwards, shake 0.3s ease-in-out 0.85s, separateRight 0.4s ease-out 1.2s forwards;
+}
+.cat-card.web.animate-in {
+  animation: slideInRightElastic 0.9s cubic-bezier(0.34, 1.2, 0.55, 1) forwards, shake 0.3s ease-in-out 0.85s, separateLeft 0.4s ease-out 1.2s forwards;
+}
+
+@keyframes slideInLeftElastic {
+  0% { transform: translateX(-120%) rotate(-3deg); opacity: 0; }
+  60% { transform: translateX(12px) rotate(1deg); opacity: 1; }
+  80% { transform: translateX(-5px) rotate(-0.5deg); }
+  100% { transform: translateX(0) rotate(0); opacity: 1; }
+}
+@keyframes slideInRightElastic {
+  0% { transform: translateX(120%) rotate(3deg); opacity: 0; }
+  60% { transform: translateX(-12px) rotate(-1deg); opacity: 1; }
+  80% { transform: translateX(5px) rotate(0.5deg); }
+  100% { transform: translateX(0) rotate(0); opacity: 1; }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+  20%, 40%, 60%, 80% { transform: translateX(3px); }
+}
+@keyframes separateRight { 0% { transform: translateX(0); } 100% { transform: translateX(12px); } }
+@keyframes separateLeft { 0% { transform: translateX(0); } 100% { transform: translateX(-12px); } }
+
+.cat-card.graphic{background:#1a1a18;}
+.cat-card.web{background:#f0ede6;}
+
+.cat-card-bg{
+  position:absolute;
+  inset:0;
+  transition:transform var(--transition);
+  will-change:transform;
+  z-index: 1;
+}
+.cat-card:hover .cat-card-bg{transform:scale(1.04);}
+
+.cat-card-content{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding:2rem 2rem 2rem;
+  z-index: 2;
+}
+.cat-card.web .cat-card-content{justify-content:center;}
+.cat-card-num{
+  font-size:10px;font-weight:600;
+  letter-spacing:0.18em;text-transform:uppercase;
+  margin-bottom:0.6rem;
+}
+.cat-card:hover .cat-card-deco {
+  animation: glitch 0.2s ease-in-out 2;
+}
+@keyframes glitch {
+  0% { transform: translate(0); opacity: 0.06; }
+  20% { transform: translate(-2px, 1px); opacity: 0.08; }
+  40% { transform: translate(2px, -1px); opacity: 0.06; }
+  60% { transform: translate(-1px, 2px); opacity: 0.07; }
+  80% { transform: translate(1px, -2px); opacity: 0.05; }
+  100% { transform: translate(0); opacity: 0.06; }
+}
+.cat-card.graphic .cat-card-num{color:rgba(232,228,217,0.45);}
+.cat-card.web .cat-card-num{color:var(--text2);}
+.cat-card-title{
+  font-size:clamp(1.4rem,2.8vw,2.2rem);
+  font-weight:300;letter-spacing:-0.02em;line-height:1.1;
+  margin-bottom:0.7rem;
+}
+.cat-card.graphic .cat-card-title{color:#e8e4d9;}
+.cat-card.web .cat-card-title{color:var(--text);}
+.cat-card-desc{
+  font-size:12px;line-height:1.6;
+  max-width:280px;
+}
+.cat-card.graphic .cat-card-desc{color:rgba(232,228,217,0.55);}
+.cat-card.web .cat-card-desc{color:var(--text2);}
+
+.cat-card-arrow{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:0.75rem;
+  margin-top:1.8rem;
+  font-size:17.6px;
+  font-weight:600;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  text-decoration:none;
+  padding: 10px 20px;
+  border-radius: 60px;
+  transition: transform 0.25s cubic-bezier(0.2, 1.2, 0.8, 1), background-color 0.3s, color 0.3s, box-shadow 0.2s;
+  width: fit-content;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+.cat-card.graphic .cat-card-arrow {
+  background-color: #f0ede6;
+  color: #1a1a18;
+}
+.cat-card.web .cat-card-arrow {
+  background-color: #1a1a18;
+  color: #f0ede6;
+}
+.cat-card.graphic .cat-card-arrow:hover {
+  background-color: #1a1a18;
+  color: #f0ede6;
+  transform: translateX(6px) scale(1.02);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+}
+.cat-card.web .cat-card-arrow:hover {
+  background-color: #f0ede6;
+  color: #1a1a18;
+  transform: translateX(6px) scale(1.02);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+}
+.cat-card-arrow span {
+  font-size: 1.2em;
+  transition: transform 0.2s ease;
+}
+.cat-card-arrow:hover span {
+  transform: translateX(5px);
+}
+
+.cat-card-deco{
+  position:absolute;
+  top:1.8rem;right:2rem;
+  font-size:clamp(80px,12vw,130px);
+  font-weight:700;letter-spacing:-0.05em;
+  line-height:1;
+  pointer-events:none;
+  transition:opacity var(--transition),transform var(--transition);
+  z-index: 1;
+}
+.cat-card.graphic .cat-card-deco{color:rgba(255,255,255,0.04);}
+.cat-card.web .cat-card-deco{color:rgba(0,0,0,0.04);}
+.cat-card:hover .cat-card-deco{
+  opacity:0.06;
+  transform:scale(1.08);
+}
+
+.about-strip{
+  padding:3.5rem 2.5rem;
+  max-width:1100px;margin:0 auto;width:100%;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:4rem;align-items:start;
+  border-top:1px solid var(--border);
+  position: relative;
+  z-index: 0;
+}
+.about-label{
+  font-size:10px;font-weight:600;
+  letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--text2);margin-bottom:1rem;
+}
+.about-text{font-size:14px;line-height:1.8;color:var(--text2);}
+.skills-list{
+  display:flex;flex-wrap:wrap;gap:0.5rem;
+  list-style:none;margin-top:0.8rem;
+}
+.skills-list li{
+  font-size:11px;letter-spacing:0.06em;
+  padding:5px 14px;
+  border:1px solid var(--border);
+  border-radius:100px;
+  color:var(--text2);
+  background:var(--tag-bg);
+}
+
+footer{
+  margin-top:auto;
+  border-top:1px solid var(--border);
+  padding:1.5rem 2.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:1rem;
+  position: relative;
+  z-index: 0;
+}
+.footer-copy{font-size:11px;color:var(--text2);letter-spacing:0.04em;}
+.footer-links{display:flex;gap:1.5rem;list-style:none;}
+.footer-links a{
+  font-size:11px;color:var(--text2);text-decoration:none;
+  letter-spacing:0.06em;transition:color 0.2s;
+}
+.footer-links a:hover{color:var(--text);}
+
+#inkCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: difference;
+}
+
+@media(max-width:700px){
+  nav{padding:0 1.2rem;}
+  .hero{padding:3.5rem 1.2rem 2rem;}
+  .section-intro,.cards-wrap,.about-strip{padding-left:1.2rem;padding-right:1.2rem;}
+  .cards-wrap{grid-template-columns:1fr;}
+  .cat-card{aspect-ratio:4/3;}
+  .about-strip{grid-template-columns:1fr;gap:2rem;}
+  footer{padding:1.2rem 1.2rem;flex-direction:column;align-items:flex-start;}
+  .cat-card-arrow{
+    font-size: 15px;
+    padding: 6px 16px;
+  }
+  .cat-card.graphic.animate-in, .cat-card.web.animate-in {
+    animation: slideInLeftElastic 0.7s ease-out forwards, shake 0.3s ease-in-out 0.7s;
+  }
+  .cat-card.web.animate-in {
+    animation: slideInRightElastic 0.7s ease-out forwards, shake 0.3s ease-in-out 0.7s;
+  }
+  .cat-card.expanded .cat-card-title {
+    font-size: 2.2rem;
+  }
+  .cat-card.expanded .cat-card-desc {
+    font-size: 1rem;
+  }
+  .cat-card.expanded .cat-card-arrow {
+    font-size: 1rem;
+    padding: 8px 18px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="preloader" id="preloader">
+  <div class="loader"></div>
+</div>
+
+<nav>
+  <a class="nav-brand" href="index.html">Enrique Malvar</a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="diseno-grafico.html">Graphic Design</a></li>
+    <li><a href="diseno-web.html">Web Design</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Graphic Designer &amp; Web Developer</div>
+  <h1 id="typewriter-title"></h1>
+  <p class="hero-sub">I create brands with character, interactive digital experiences and platforms that connect the physical world with the digital. I combine graphic design, front-end development and emerging technologies like NFC to take your projects to the next level.</p>
+</section>
+
+<div style="max-width:1100px;margin:0 auto;width:100%;padding:0 2.5rem;">
+  <div class="divider-inner"></div>
+</div>
+
+<div class="section-intro">
+  <span>Disciplines</span>
+</div>
+
+<div class="cards-wrap">
+
+  <a href="diseno-grafico.html" class="cat-card graphic" id="card-graphic">
+    <canvas class="card-canvas" id="canvas-graphic"></canvas>
+    <div class="cat-card-bg"></div>
+    <div class="cat-card-deco">01</div>
+    <div class="cat-card-content">
+      <div class="cat-card-num">01 — Branding & Graphics</div>
+      <div class="cat-card-title">Graphic<br>Design</div>
+      <div class="cat-card-desc">Logos, visual identity and posters for brands and events with a strategic approach.</div>
+      <div class="cat-card-arrow">View work <span>→</span></div>
+    </div>
+  </a>
+
+  <a href="diseno-web.html" class="cat-card web" id="card-web">
+    <canvas class="card-canvas" id="canvas-web"></canvas>
+    <div class="cat-card-bg"></div>
+    <div class="cat-card-deco">02</div>
+    <div class="cat-card-content">
+      <div class="cat-card-num">02 — UX & Full-Stack</div>
+      <div class="cat-card-title">Web<br>Design</div>
+      <div class="cat-card-desc">Complete platforms, NFC ecosystems and digital solutions built with HTML, CSS, JavaScript and Python.</div>
+      <div class="cat-card-arrow">View projects <span>→</span></div>
+    </div>
+  </a>
+
+</div>
+
+<div class="about-strip" id="about-strip">
+  <div>
+    <div class="about-label">About me</div>
+    <p class="about-text">Graphic designer and full-stack developer with <strong><span id="exp-counter">0</span>+ years of experience</strong>. My ability to combine visual design and technical development allows me to manage end-to-end projects, from concept to deployment. Specialized in NFC solutions, process automation and high-impact digital experience design. I have worked with startups and agencies, always bringing a differential value where aesthetics and functionality go hand in hand.</p>
+  </div>
+  <div>
+    <div class="about-label">Tools &amp; skills</div>
+    <ul class="skills-list">
+      <li>Figma</li>
+      <li>Adobe Suite</li>
+      <li>HTML / CSS / JS</li>
+      <li>WordPress / Divi</li>
+      <li>Python / Node.js</li>
+      <li>Odoo CRM</li>
+      <li>NFC Technology</li>
+      <li>UI/UX</li>
+      <li>Git / GitHub</li>
+    </ul>
+  </div>
+</div>
+
+<footer>
+  <span class="footer-copy">© 2025 Enrique Malvar — Graphic Designer & Web Developer</span>
+  <ul class="footer-links">
+    <li><a href="#">LinkedIn</a></li>
+    <li><a href="#">GitHub</a></li>
+    <li><a href="#">Behance</a></li>
+    <li><a href="#">Download CV</a></li>
+  </ul>
+</footer>
+
+<canvas id="inkCanvas"></canvas>
+
+<script>
+  (function() {
+    window.addEventListener('load', function() {
+      const preloader = document.getElementById('preloader');
+      if(preloader) preloader.classList.add('hide');
+    });
+
+    const fullText = "Hi, I'm Enrique Malvar.\nSpecialist in visual identity, full-stack development and NFC solutions.";
+    const titleElement = document.getElementById('typewriter-title');
+    if (titleElement) {
+      let i = 0;
+      titleElement.innerHTML = '';
+      const textSpan = document.createElement('span');
+      textSpan.className = 'typewriter-text';
+      const cursorSpan = document.createElement('span');
+      cursorSpan.className = 'typewriter-cursor';
+      cursorSpan.innerHTML = ' ';
+      titleElement.appendChild(textSpan);
+      titleElement.appendChild(cursorSpan);
+      function typeWriter() {
+        if (i < fullText.length) {
+          let char = fullText.charAt(i);
+          if (char === '\n') textSpan.innerHTML += '<br>';
+          else textSpan.innerHTML += char;
+          i++;
+          setTimeout(typeWriter, 45);
+        } else {
+          cursorSpan.style.display = 'none';
+        }
+      }
+      window.addEventListener('DOMContentLoaded', typeWriter);
+    }
+
+    const graphicCard = document.getElementById('card-graphic');
+    const webCard = document.getElementById('card-web');
+    if (graphicCard && webCard) {
+      setTimeout(() => {
+        graphicCard.classList.add('animate-in');
+        webCard.classList.add('animate-in');
+      }, 100);
+    }
+
+    const expSpan = document.getElementById('exp-counter');
+    if (expSpan) {
+      const observerExp = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            let current = 0;
+            const target = 5;
+            const step = target / 40;
+            const timer = setInterval(() => {
+              current += step;
+              if (current >= target) {
+                expSpan.innerText = target;
+                clearInterval(timer);
+              } else {
+                expSpan.innerText = Math.floor(current);
+              }
+            }, 25);
+            observerExp.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+      observerExp.observe(expSpan);
+    }
+
+    const canvasGraphic = document.getElementById('canvas-graphic');
+    if (canvasGraphic) {
+      const ctx = canvasGraphic.getContext('2d');
+      let width, height;
+      let shapes = [];
+      let state = 'appearing';
+      let animationId = null;
+      
+      function resizeCanvas() {
+        const container = graphicCard;
+        width = container.clientWidth;
+        height = container.clientHeight;
+        canvasGraphic.width = width;
+        canvasGraphic.height = height;
+        initShapes(true);
+      }
+      
+      function initShapes(resetProgress = true) {
+        shapes = [];
+        const numShapes = 12;
+        for (let i = 0; i < numShapes; i++) {
+          let type = Math.floor(Math.random() * 3);
+          let size = 20 + Math.random() * 60;
+          let x = Math.random() * (width - size) + size/2;
+          let y = Math.random() * (height - size) + size/2;
+          let progress = resetProgress ? 0 : 1;
+          let speed = 0.005 + Math.random() * 0.01;
+          let rotation = Math.random() * Math.PI * 2;
+          shapes.push({ type, x, y, size, progress, speed, rotation });
+        }
+      }
+      
+      function drawShape(ctx, shape) {
+        const { type, x, y, size, progress, rotation } = shape;
+        if (progress <= 0) return;
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(rotation);
+        ctx.beginPath();
+        let opacity = 0.14 * progress;
+        ctx.strokeStyle = `rgba(232, 228, 217, ${opacity})`;
+        ctx.lineWidth = 1.5;
+        switch(type) {
+          case 0:
+            ctx.arc(0, 0, size/2 * progress, 0, Math.PI * 2 * progress);
+            break;
+          case 1:
+            const half = size/2 * progress;
+            ctx.rect(-half, -half, size*progress, size*progress);
+            break;
+          case 2:
+            const h = size * progress;
+            const w = size * progress;
+            ctx.moveTo(0, -h/2);
+            ctx.lineTo(w/2, h/2);
+            ctx.lineTo(-w/2, h/2);
+            ctx.closePath();
+            break;
+        }
+        ctx.stroke();
+        ctx.restore();
+      }
+      
+      function animateShapes() {
+        let allFinished = true;
+        if (state === 'appearing') {
+          for (let shape of shapes) {
+            if (shape.progress < 1) {
+              shape.progress += shape.speed;
+              if (shape.progress > 1) shape.progress = 1;
+              allFinished = false;
+            }
+          }
+          if (allFinished) state = 'disappearing';
+        } else if (state === 'disappearing') {
+          for (let shape of shapes) {
+            if (shape.progress > 0) {
+              shape.progress -= shape.speed;
+              if (shape.progress < 0) shape.progress = 0;
+              allFinished = false;
+            }
+          }
+          if (allFinished) {
+            initShapes(true);
+            state = 'appearing';
+          }
+        }
+        ctx.clearRect(0, 0, width, height);
+        for (let shape of shapes) drawShape(ctx, shape);
+        animationId = requestAnimationFrame(animateShapes);
+      }
+      
+      function startGraphicAnimation() {
+        if (animationId) cancelAnimationFrame(animationId);
+        resizeCanvas();
+        state = 'appearing';
+        animateShapes();
+      }
+      
+      window.addEventListener('resize', () => {
+        if (canvasGraphic && canvasGraphic.parentElement) resizeCanvas();
+      });
+      startGraphicAnimation();
+    }
+    
+    const canvasWebBg = document.getElementById('canvas-web');
+    if (canvasWebBg) {
+      const ctxWeb = canvasWebBg.getContext('2d');
+      let widthWeb, heightWeb;
+      let fontSize = 14;
+      let drops = [];
+      let matrixAnimationId = null;
+      let frameCounter = 0;
+      
+      function resizeCanvasWeb() {
+        const container = webCard;
+        widthWeb = container.clientWidth;
+        heightWeb = container.clientHeight;
+        canvasWebBg.width = widthWeb;
+        canvasWebBg.height = heightWeb;
+        initMatrix();
+      }
+      
+      function initMatrix() {
+        const columns = Math.floor(widthWeb / fontSize);
+        drops = [];
+        for(let i = 0; i < columns; i++) {
+          drops[i] = Math.floor(Math.random() * -heightWeb / fontSize);
+        }
+      }
+      
+      function drawMatrix() {
+        if (!canvasWebBg || !canvasWebBg.parentElement) return;
+        frameCounter++;
+        if (frameCounter % 2 === 0) {
+          ctxWeb.fillStyle = 'rgba(240, 237, 230, 0.08)';
+          ctxWeb.fillRect(0, 0, widthWeb, heightWeb);
+          ctxWeb.fillStyle = 'rgba(0, 0, 0, 0.25)';
+          ctxWeb.font = `${fontSize}px monospace`;
+          const columns = Math.floor(widthWeb / fontSize);
+          for(let i = 0; i < columns; i++) {
+            const char = Math.random() < 0.5 ? '0' : '1';
+            const x = i * fontSize;
+            const y = drops[i] * fontSize;
+            ctxWeb.fillText(char, x, y);
+            if(y > heightWeb && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
+          }
+        } else {
+          ctxWeb.fillStyle = 'rgba(240, 237, 230, 0.08)';
+          ctxWeb.fillRect(0, 0, widthWeb, heightWeb);
+        }
+        matrixAnimationId = requestAnimationFrame(drawMatrix);
+      }
+      
+      function startMatrix() {
+        if (matrixAnimationId) cancelAnimationFrame(matrixAnimationId);
+        resizeCanvasWeb();
+        frameCounter = 0;
+        drawMatrix();
+      }
+      
+      window.addEventListener('resize', () => {
+        if (canvasWebBg && canvasWebBg.parentElement) resizeCanvasWeb();
+      });
+      startMatrix();
+      
+      const webCardElem = document.getElementById('card-web');
+      if (webCardElem) {
+        webCardElem.addEventListener('mouseenter', () => {
+          canvasWebBg.style.filter = 'brightness(1.1) drop-shadow(0 0 2px rgba(0,0,0,0.3))';
+        });
+        webCardElem.addEventListener('mouseleave', () => {
+          canvasWebBg.style.filter = 'none';
+        });
+      }
+      
+      const observerWeb = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            if (!matrixAnimationId) startMatrix();
+          } else {
+            if (matrixAnimationId) {
+              cancelAnimationFrame(matrixAnimationId);
+              matrixAnimationId = null;
+            }
+          }
+        });
+      }, { threshold: 0.1 });
+      observerWeb.observe(canvasWebBg);
+    }
+
+    function setupParticles(cardId, canvasId, particleColor) {
+      const card = document.getElementById(cardId);
+      const canvas = document.getElementById(canvasId);
+      if (!card || !canvas) return;
+      let particles = [];
+      let particleAnimation = null;
+      
+      function createParticle(x, y) {
+        return { x, y, size: 2 + Math.random() * 4, alpha: 0.5, life: 1, decay: 0.02 + Math.random() * 0.03 };
+      }
+      
+      function drawParticles(ctx, width, height) {
+        ctx.clearRect(0, 0, width, height);
+        for (let i = particles.length-1; i >= 0; i--) {
+          const p = particles[i];
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = particleColor;
+          ctx.fill();
+          p.life -= p.decay;
+          if (p.life <= 0) particles.splice(i,1);
+        }
+        if (particles.length > 0) {
+          particleAnimation = requestAnimationFrame(() => drawParticles(ctx, width, height));
+        } else {
+          cancelAnimationFrame(particleAnimation);
+          particleAnimation = null;
+        }
+      }
+      
+      let ctx = canvas.getContext('2d');
+      let width = canvas.width, height = canvas.height;
+      let frame = null;
+      
+      function resizeAndClear() {
+        width = canvas.clientWidth;
+        height = canvas.clientHeight;
+        canvas.width = width;
+        canvas.height = height;
+        if (particles.length === 0 && frame) cancelAnimationFrame(frame);
+      }
+      
+      card.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        particles.push(createParticle(x, y));
+        if (!frame) {
+          frame = requestAnimationFrame(() => drawParticles(ctx, width, height));
+        }
+      });
+      
+      card.addEventListener('mouseleave', () => {
+        particles = [];
+        if (frame) {
+          cancelAnimationFrame(frame);
+          frame = null;
+          ctx.clearRect(0, 0, width, height);
+        }
+      });
+      
+      window.addEventListener('resize', () => { resizeAndClear(); });
+      resizeAndClear();
+    }
+    
+    setupParticles('card-graphic', 'canvas-graphic', '#e8e4d9');
+    setupParticles('card-web', 'canvas-web', '#1a1a18');
+
+    const graphicExp = document.getElementById('card-graphic');
+    const webExp = document.getElementById('card-web');
+    
+    function expandCard(card) {
+      if (!card) return;
+      card.classList.add('expanded');
+      const inkCanvas = document.getElementById('inkCanvas');
+      if (inkCanvas) inkCanvas.style.opacity = '0';
+    }
+    
+    function collapseCard(card) {
+      if (!card) return;
+      card.classList.remove('expanded');
+      const inkCanvas = document.getElementById('inkCanvas');
+      if (inkCanvas) inkCanvas.style.opacity = '1';
+    }
+    
+    graphicExp.addEventListener('mouseenter', () => expandCard(graphicExp));
+    graphicExp.addEventListener('mouseleave', () => collapseCard(graphicExp));
+    webExp.addEventListener('mouseenter', () => expandCard(webExp));
+    webExp.addEventListener('mouseleave', () => collapseCard(webExp));
+    
+    const inkCanvas = document.getElementById('inkCanvas');
+    if (inkCanvas) {
+      const ctxInk = inkCanvas.getContext('2d');
+      let inkWidth, inkHeight;
+      let mouseX = -200, mouseY = -200;
+      let currentX = -200, currentY = -200;
+      let lastX = mouseX, lastY = mouseY;
+      let velocityX = 0, velocityY = 0;
+      let baseRadius = 90;
+      let radius = baseRadius;
+      let stretchX = 1, stretchY = 1;
+      let trail = [];
+      
+      function resizeInk() {
+        inkWidth = window.innerWidth;
+        inkHeight = window.innerHeight;
+        inkCanvas.width = inkWidth;
+        inkCanvas.height = inkHeight;
+      }
+      
+      window.addEventListener('resize', resizeInk);
+      resizeInk();
+      
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+      
+      document.addEventListener('mouseleave', () => {
+        mouseX = -200;
+        mouseY = -200;
+      });
+      
+      function updateInk() {
+        currentX += (mouseX - currentX) * 0.12;
+        currentY += (mouseY - currentY) * 0.12;
+        
+        velocityX = mouseX - lastX;
+        velocityY = mouseY - lastY;
+        lastX = mouseX;
+        lastY = mouseY;
+        
+        const speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
+        const stretchFactor = Math.min(0.6, speed * 0.01);
+        
+        if (Math.abs(velocityX) > Math.abs(velocityY)) {
+          stretchX += (1 + stretchFactor - stretchX) * 0.2;
+          stretchY += (1 - stretchFactor * 0.5 - stretchY) * 0.2;
+        } else {
+          stretchY += (1 + stretchFactor - stretchY) * 0.2;
+          stretchX += (1 - stretchFactor * 0.5 - stretchX) * 0.2;
+        }
+        
+        stretchX += (1 - stretchX) * 0.08;
+        stretchY += (1 - stretchY) * 0.08;
+        
+        trail.push({ x: currentX, y: currentY, vx: velocityX, vy: velocityY, life: 1 });
+        if (trail.length > 12) trail.shift();
+      }
+      
+      function drawInk() {
+        ctxInk.clearRect(0, 0, inkWidth, inkHeight);
+        for (let i = 0; i < trail.length; i++) {
+          const t = trail[i];
+          t.life -= 0.035;
+          if (t.life <= 0) continue;
+          const alpha = t.life * 0.4;
+          ctxInk.beginPath();
+          ctxInk.ellipse(t.x - t.vx * 0.7, t.y - t.vy * 0.7, radius * 0.6, radius * 0.6, 0, 0, Math.PI * 2);
+          ctxInk.fillStyle = `rgba(33,33,33,${alpha})`;
+          ctxInk.fill();
+        }
+        ctxInk.beginPath();
+        ctxInk.ellipse(currentX, currentY, radius * stretchX, radius * stretchY, 0, 0, Math.PI * 2);
+        ctxInk.fillStyle = '#212121';
+        ctxInk.fill();
+      }
+      
+      function loopInk() {
+        updateInk();
+        drawInk();
+        requestAnimationFrame(loopInk);
+      }
+      loopInk();
+    }
+    
+  })();
+</script>
+</body>
+</html>
